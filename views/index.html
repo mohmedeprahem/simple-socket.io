@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="viewMessage">
+    
+    </ul>
+    <input id="input" autocomplete="off" /><button onclick="sendMessage()">Send</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const viewMessage = document.querySelector("#viewMessage")
+        const socket = io('http://localhost:3000');
+
+        const input = document.getElementById('input');
+
+        function sendMessage () {
+            if (input.value) {
+                socket.emit('chatMessage', input.value);
+                input.value = '';
+            }
+        }
+        
+        socket.on('welcome', data => {
+            console.log(data)
+        })
+
+        socket.on('responseMessage', data => {
+            console.log(data)
+            viewMessage.innerHTML += `<li> ${data} </li>`
+        })
+    </script>
+    </body>
+</html>
